@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flexi Scrum demo FlexiDating</title>
+    <link href="css/index.css" rel="stylesheet"/>
+    <script src="js/index.js"></script>    
+    <!--<script src="https://code.jquery.com/jquery-1.10.2.js"></script>-->
+</head>
+<body class="bodyProfielen">
+<script src="js/jquery.min.js"></script>
+<script async src="js/flexi_scrum.min.js"></script>
+
+<!--container-->
+<div id="containerSite">
+
+    <!--header-->
+    <header id="header">
+        <!--header left banner-->
+        <section id="banner"></section>
+        <!--header right opvulling kleur en knop-->
+        <aside id="menuTopRight">
+            <nav>
+                <ul>                    
+                    <li><button id="deKnop17">Mijn profiel</button></li>                    
+                    <li><button id="deKnop18">Uitloggen</button></li>                    
+                </ul>
+            </nav>            
+        </aside>
+    </header>
+    <!--end header-->
+
+    <div id="midden">
+
+        <div id="kolom1">
+            <button onclick="search_open()" id="openSearch" style="float:left;"">>></button>
+            <button onclick="search_close()" id="closeSearch" style="display:none; float:right;"><<</button>
+            <div class="nav" id="search" style="display:none">
+
+                <ul id="eersteZoek">
+                    <!-- <li>
+                        <label>zoek op index (getal) </label><br><input type="text" name="zoek_index" id="zoek_index">                        
+                    </li>
+                    <li>
+                        <label>zoek op id </label><br><input type="text" name="zoek_id" id="zoek_id">
+                    </li> -->
+                    <li id="zVoornaam">
+                        <label>zoek op voornaam </label><br><input type="text" name="zoek_voornaam" id="zoek_voornaam"><br>
+                        <label>Fuzzy search <input type="checkbox" name="voornaam_fuzzy"
+                                                       id="voornaam_fuzzy"></label>
+                    </li>
+                    <li id="zSexe">
+                        <label>kies sexe </label><br>
+                        <select name="zoek_sexe" id="zoek_sexe">
+                            <option value="" selected>beide sexes</option>
+                            <option>v</option>
+                            <option>m</option>
+                        </select>
+                    </li>
+                    <li id="zHaarkleur">
+                        <label>zoek haarkleur </label><br>
+                        <input type="text" name="zoek_haarkleur" id="zoek_haarkleur">
+                    </li>
+                    <li id="zOogkleur">
+                        <label>zoek oogkleur </label><br>
+                        <input type="text" name="zoek_oogkleur" id="zoek_oogkleur">
+                    </li>
+                    <li id="zGrootte">
+                        <label>kleiner dan </label><br><input type="text" name="zoek_grootte" id="zoek_grootte"
+                                                             placeholder="grootte">
+                    </li>
+
+                    <li id="zGebdatum">
+                        <label>geboortedatum vroeger dan</label><br>
+                        <input type="date" name="zoek_datum"
+                                                            id="zoek_datum"
+                                                            placeholder="datum (yyyy-mm-dd)">
+                    </li>
+                    <li>
+                        <button type=button id="deKnop16">Find your love</button>
+                    </li>
+                    <br>
+                    <li>
+                        <button type=button id="lucky">I feel Lucky</button>
+                    </li>
+					
+                    <li id="boodschapZoekMogelijkheden"><br>
+                        <p>Vul je profiel verder aan voor meer zoekmogelijkheden</p>
+                    </li>
+					<!--VWI-->
+                </ul>
+            </div>
+        </div>
+        <div id="kolom2"><br>
+            <!--foto' van alle profielen>
+<div id="midden">
+    <!--container egevens-->
+            <div id="containerOverzicht">
+
+            <!--end midden-->
+        </div>
+
+    </div>
+    <div id="kolom3">
+        <!--NIEUWE CODE-->
+        <p id="voortgangProfiel"></p>
+        <div id="progressBar">
+            <div id="progressBarInside"><span id="barText"></span></div>
+        </div>
+        <!--END NIEUWE CODE-->
+    </div>
+</div>
+<!--ERIC DEBUT-->
+    <footer id="footer">
+        <p>Copyright
+        <button id="buttonMail" class="btn_14">Contact Webmaster</button></p>
+	</footer>
+</div>
+<!--ERIC FIN-->
+
+
+
+<!--<script defer>
+    window.onload = function () {
+        console.log(scrumlib.getAllDatasets());
+
+    }
+</script>-->
+<script>
+    function search_open() {
+        document.getElementById("search").style.width = "100%";
+        document.getElementById("search").style.display = "block";
+        document.getElementById("openSearch").style.display = "none";
+        document.getElementById("closeSearch").style.display = "inline";
+    }
+
+    function search_close() {
+        document.getElementById("search").style.display = "none";
+        document.getElementById("openSearch").style.display = "inline";
+        document.getElementById("closeSearch").style.display = "none";
+    }
+</script>
+</body>
+</html>

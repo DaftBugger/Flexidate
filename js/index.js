@@ -1,0 +1,372 @@
+window.onload = function () {
+    //console.log(scrumlib.getAllDatasets());
+    //console.log("js geladen");
+
+    // var zoek_id = document.getElementById('zoek_id');
+    // var zoek_index = document.getElementById('zoek_index');
+    var zoek_voornaam = document.getElementById('zoek_voornaam');
+    var zoek_sexe = document.getElementById('zoek_sexe');
+    var zoek_haarkleur = document.getElementById('zoek_haarkleur');
+    var zoek_oogkleur = document.getElementById('zoek_oogkleur');
+    var zoek_grootte = document.getElementById('zoek_grootte');
+    var zoek_datum = document.getElementById('zoek_datum');
+
+    //console.log(scrumlib.getAllDatasets());
+
+    //console.log("js onload overzicht");
+
+    var buttonProfiel = document.querySelector('#deKnop17');
+    buttonProfiel.addEventListener('click', function () {
+        submitProfiel()
+    });
+
+    var buttonLogoff = document.querySelector('#deKnop18');
+    buttonLogoff.addEventListener('click', function () {
+        submitLogoff()
+    });
+
+//* ERIC DEBUT
+	var buttonMail = document.querySelector('#buttonMail');
+    buttonMail.addEventListener('click', function () {
+        submitMail()
+    });	
+//* ERIC FIN    
+	
+    var loggedUser = scrumlib.getDatasetById(localStorage.getItem("ingelogd"));
+
+	//console.log(scrumlib.getDatasetById(localStorage.getItem("ingelogd")));
+    /*toonVoortgangProfiel(scrumlib.getDatasetById(localStorage.getItem("ingelogd")));*/
+
+	var filteredSet = scrumlib.getAllDatasets();
+	
+
+    //console.log(filteredSet);
+
+    var myNode = document.getElementById("containerOverzicht");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+    var eContainer=document.getElementById("containerOverzicht");
+    var eUl = document.createElement('div');
+    //jsObject = JSON.parse(localStorage.flexidata);
+	jsObject = filteredSet;
+    var aantal = jsObject.length;
+	
+	stringInnerHtml = "<div class='gallery'>"; 
+	
+		for(var i=0;i<aantal;i++){
+			eElem = jsObject[i];			
+
+			stringInnerHtml = stringInnerHtml + "<div class='thumb'" + " onclick=clickPhoto('" + eElem._id + "')>";
+				
+			stringInnerHtml = stringInnerHtml + "<img width='100' src= img/" + eElem.foto + " alt='Geen foto' title='"+ eElem.nickname +"'>" + "<center class='caption'>" + eElem.nickname + "</center></div>";
+				
+						
+		}
+		
+		stringInnerHtml = stringInnerHtml + "</div>";		
+		
+		eContainer.innerHTML = stringInnerHtml;		
+	
+
+
+    setVoortgangProfiel(scrumlib.getDatasetById(localStorage.getItem("ingelogd")));
+
+
+    var deKnop16 = document.getElementById('deKnop16');
+    setSearchVisibility(loggedUser, deKnop16);
+
+    deKnop16.addEventListener('click', function () {
+
+        var aAllDatasets = scrumlib.getAllDatasets();
+       // console.log(aAllDatasets);
+        // var idSet = scrumlib.getDatasetById(zoek_id.value);
+        var filteredSet = aAllDatasets;
+
+        // if (idSet.length !== 0) {
+        //     filteredSet = filterSearchResults(aAllDatasets, idSet);
+        // }
+
+        var fuzzy = document.getElementById('voornaam_fuzzy').checked;
+        var match = (fuzzy === true) ? "~" : "=";
+        var condition = {voornaam: {"waarde": zoek_voornaam.value, "match": match}};
+        var voornaamSet = scrumlib.getDatasetsByConditions(condition);
+        //console.log(voornaamSet);
+
+        if ((voornaamSet.length !== 0 || zoek_voornaam.value !== "") /*&& (fuzzy.disabled===false) && (zoek_voornaam.disabled === false)*/) {
+            filteredSet = filterSearchResults(filteredSet, voornaamSet);
+        }
+        // var indexSet = scrumlib.getDatasetByIndex(zoek_index.value);
+        // if (zoek_index.value !== "" && indexSet !== undefined) {
+        //     filteredSet = filterSearchResults(filteredSet, indexSet);
+        // }
+
+
+        var zoek = zoek_sexe.value;
+        if (zoek !== "") {
+            match = "=";
+            condition = {sexe: {"waarde": zoek, "match": match}};
+            var sexeSet = scrumlib.getDatasetsByConditions(condition);
+            filteredSet = filterSearchResults(filteredSet, sexeSet);
+        }
+
+        condition = {haarkleur: {"waarde": zoek_haarkleur.value, "match": "~"}};
+        var haarkleurSet = scrumlib.getDatasetsByConditions(condition);
+        if (haarkleurSet.length !== 0 || zoek_haarkleur.value !== "") {
+            filteredSet = filterSearchResults(filteredSet, haarkleurSet);
+        }
+        condition = {oogkleur: {"waarde": zoek_oogkleur.value, "match": "~"}};
+        var oogkleurSet = scrumlib.getDatasetsByConditions(condition);
+        if (oogkleurSet.length !== 0) {
+            filteredSet = filterSearchResults(filteredSet, oogkleurSet);
+        }
+
+        condition = {grootte: {"waarde": zoek_grootte.value, "match": "<"}};
+        var grootteSet = scrumlib.getDatasetsByConditions(condition);
+        if (grootteSet.length !== 0 || zoek_grootte.value !== "") {
+            filteredSet = filterSearchResults(filteredSet, grootteSet);
+        }
+
+        condition = {geboortedatum: {"waarde": zoek_datum.value, "match": "<"}};
+        var gebDatumSet = scrumlib.getDatasetsByConditions(condition);
+        if (gebDatumSet.length !== 0) {
+            filteredSet = filterSearchResults(filteredSet, gebDatumSet);
+        }
+
+        //      console.log(filteredSet);
+
+        var myNode = document.getElementById("containerOverzicht");
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
+        }
+        var eContainer=document.getElementById("containerOverzicht");
+        var eUl = document.createElement('div');
+        //jsObject = JSON.parse(localStorage.flexidata);
+        jsObject = filteredSet;
+        var aantal = jsObject.length;
+		
+		stringInnerHtml = "<div class='gallery'>"; 
+	
+		for(var i=0;i<aantal;i++){
+			eElem = jsObject[i];			
+
+			stringInnerHtml = stringInnerHtml + "<div class='thumb'" + " onclick=clickPhoto('" + eElem._id + "')>";
+				
+			stringInnerHtml = stringInnerHtml + "<img width='100' src= img/" + eElem.foto + " alt='Geen foto' title='"+ eElem.nickname +"'>" + "<center class='caption'>" + eElem.nickname + "</center></div>";
+				
+						
+		}
+		
+		stringInnerHtml = stringInnerHtml + "</div>";		
+		
+		eContainer.innerHTML = stringInnerHtml;		
+
+		
+		
+		
+	 });
+
+	 		 var delucky = document.getElementById('lucky');
+
+        //VWI
+        delucky.addEventListener('click', function () {
+
+            var aAllDatasets = scrumlib.getAllDatasets();
+			var myNode = document.getElementById("containerOverzicht");
+			while (myNode.firstChild) {
+				myNode.removeChild(myNode.firstChild);
+			}
+			var eContainer=document.getElementById("containerOverzicht");
+			var zoek_index = Math.floor(Math.random() * (aAllDatasets.length - 1));
+			var jsObject = scrumlib.getDatasetByIndex(zoek_index);
+			var eUl = document.createElement('div');
+			var aantal = jsObject.length;
+			
+			
+			
+			stringInnerHtml = "<div class='gallery'>"; 
+	
+			for(var i=0;i<aantal;i++){
+				eElem = jsObject[i];			
+
+				stringInnerHtml = stringInnerHtml + "<div class='thumb'" + " onclick=clickPhoto('" + eElem._id + "')>";
+				
+				stringInnerHtml = stringInnerHtml + "<img width='100' src= img/" + eElem.foto + " alt='Geen foto' title='"+ eElem.nickname +"'>" + "<center class='caption'>" + eElem.nickname + "</center></div>";
+				
+						
+			}
+		
+			stringInnerHtml = stringInnerHtml + "</div>";		
+		
+			eContainer.innerHTML = stringInnerHtml;		
+			
+			
+			
+		
+	    });
+		//VWI
+	 
+};
+
+
+function submitProfiel() {
+     console.log("submitProfiel");
+
+    localStorage.setItem ("detailID",localStorage.getItem("ingelogd"));
+    localStorage.setItem ("switchup","1");
+
+    location.href = "mijnprofiel.html";
+}
+
+function submitLogoff() {
+    console.log("submitLogoff");
+
+    localStorage.removeItem("ingelogd");
+    window.open("index.html","_self");
+}
+ 
+ //* ERIC DEB
+function submitMail() {
+    console.log("submitMail");
+	
+	location.href = "mailWebmaster.html";
+}
+ //* ERIC FIN
+
+
+function clickPhoto(local_id) {
+    //console.log("Toon detail voor " + local_id );
+
+    localStorage.setItem ("detailID",local_id);
+    localStorage.setItem ("switchup","0");
+
+    location.href = "viewprofile.html";
+}
+
+
+
+function setSearchVisibility(loggedUser, zoekKnop) {
+    var oUser = loggedUser[0];
+    var eVoornaam = document.getElementById('zoek_voornaam');
+    var zVoornaam = document.getElementById('zVoornaam');
+    var eFuzzy = document.getElementById('voornaam_fuzzy');
+    var eSexe = document.getElementById('zoek_sexe');
+    var zSexe = document.getElementById('zSexe');
+    var eHaarkleur = document.getElementById('zoek_haarkleur');
+    var zHaarkleur = document.getElementById('zHaarkleur');
+    var eOogkleur = document.getElementById('zoek_oogkleur');
+    var zOogkleur = document.getElementById('zOogkleur');
+    var eKleiner = document.getElementById('zoek_grootte');
+    var zGrootte = document.getElementById('zGrootte');
+    var eGebDatum = document.getElementById('zoek_datum');
+    var zGebDatum = document.getElementById('zGebdatum');
+
+
+
+
+    if (oUser.voornaam === "") {
+        eVoornaam.style.display = "none";
+        eFuzzy.style.display = "none";
+        zVoornaam.style.display = "none";
+    }
+    if (oUser.sexe === "") {
+        eSexe.style.display = "none";
+        zSexe.style.display = "none";
+    }
+    if (oUser.haarkleur === "") {
+        eHaarkleur.style.display = "none";
+        zHaarkleur.style.display = "none";
+    }
+    if (oUser.oogkleur === "") {
+        eOogkleur.style.display = "none";
+        zOogkleur.style.display = "none";
+    }
+    if (oUser.grootte === 0 || oUser.grootte === "") {
+        eKleiner.style.display = "none";
+        zGrootte.style.display = "none";
+    }
+    if (oUser.geboortedatum === "") {
+        eGebDatum.style.display = "none";
+        zGebDatum.style.display = "none";
+    }
+    if (oUser.voornaam === "" && oUser.sexe === "" && oUser.haarkleur === "" && oUser.oogkleur === "" && (oUser.grootte === 0 || oUser.grootte === "") &&
+        oUser.geboortedatum === "") {zoekKnop.style.display ="none";}
+}
+
+function filterSearchResults(firstArray, secondArray) {
+    var tempSet = [];
+    for (i = 0; i < firstArray.length; i++) {
+        for (j = 0; j < secondArray.length; j++) {
+
+            if (firstArray[i]._id === secondArray[j]._id) {
+                tempSet.push(firstArray[i]);
+            }
+        }
+    }
+    return tempSet;
+}
+
+function setVoortgangProfiel(loggedUser) {
+    var oUser = loggedUser[0];
+    var totaalVelden = 12;
+    var ingevuld = 0;
+    var oVoortgang = document.getElementById('voortgangProfiel');
+
+
+    if (oUser.beroep !== "") {
+        ingevuld++;
+    }
+    if (oUser.familienaam !== "") {
+        ingevuld++;
+    }
+    if (oUser.foto !== "") {
+        ingevuld++;
+    }
+    if (oUser.geboortedatum !== "") {
+        ingevuld++;
+    }
+    if (oUser.gewicht > 0) {
+        ingevuld++;
+    }
+    if (oUser.grootte > 0) {
+        ingevuld++;
+    }
+    if (oUser.haarkleur !== "") {
+        ingevuld++;
+    }
+    if (oUser.oogkleur !== "") {
+        ingevuld++;
+    }
+    if (oUser.nickname !== "") {
+        ingevuld++;
+    }
+    if (oUser.oogkleur !== "") {
+        ingevuld++;
+    }
+    if (oUser.sexe !== "") {
+        ingevuld++;
+    }
+    if (oUser.voornaam !== "") {
+        ingevuld++;
+    }
+
+    var procent = Math.round((100 / totaalVelden) * ingevuld);
+
+    oVoortgang.innerHTML = "Profielstatus";
+
+    document.getElementById('progressBarInside').style.width = procent + "px";
+    document.getElementById('barText').innerHTML = procent+"%";
+
+    /* YOERIK **** Stukje code om de progressbar te kleuren *****/
+    if ((procent) < 100) {
+        document.getElementById('progressBarInside').className = 'progressNotFull';
+    } else {
+        document.getElementById('progressBarInside').className = 'progressFull';
+    }
+/* YOERIK **** EINDE Stukje code om de progressbar te kleuren *****/
+
+    var boodschapZoek = document.getElementById('boodschapZoekMogelijkheden');
+    if(procent === 100) {boodschapZoek.style.display ="none";}
+
+}
+

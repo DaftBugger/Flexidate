@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+</head>
+<body>
+<div class="wrapper">
+    <div class="content">
+       <section id="demo">
+	        <div id="test"></div>
+            <div id="zoek">
+                <p><label>Login</label><input type="text" name="login_email" id="login_email" placeholder="email">
+				   <input type="text" name="login_pw1" id="login_pw1" placeholder="wachtwoord1">
+				   <input type="text" name="login_pw2" id="login_pw2" placeholder="wachtwoord2">
+                    <button type=button id="deKnop14">Register</button>
+					
+                </p>
+				
+				
+            </div>
+        </section>
+    </div>
+    
+</div>
+<script src="js/jquery.min.js"></script>
+<script async src="js/flexi_scrum_2.1.0.min.js"></script>
+<script defer>
+
+    var libversie, deKnop14;
+    var login_email, login_pw1,login_pw2;
+
+    window.onload = function () {
+
+
+        libversie = document.getElementById('libversie');
+        deKnop14 = document.getElementById('deKnop14');
+		
+		
+        //form velden
+        login_email = document.getElementById('login_email');
+        login_pw1 = document.getElementById('login_pw1');
+		login_pw2 = document.getElementById('login_pw2');
+
+		
+        deKnop14.addEventListener('click', function (e) {
+            //login return id of false
+            var condition = {email: {"waarde": login_email.value, "match": "~"}};
+            //console.log(scrumlib.getDatasetsByConditions(condition));
+			var jobject =scrumlib.getDatasetsByConditions(condition);
+			//console.log(jobject);
+			//console.log(jobject.length);
+			
+			if  (jobject.length != 0)
+			{
+				alert("Registratie met dit email adres is reeds gebeurd (paswoord vergeten)");
+			}
+			console.log(login_pw1.value);
+			console.log(login_pw2.value);
+			if (login_pw1.value == "" || login_pw2.value == "")
+			{ 
+			    alert("Gelieve beide paswoorden in te vullen");
+			}
+			if (login_pw1.value != login_pw2.value )
+			{ 
+			    alert("Beide paswoorden moeten gelijk zijn.");
+			}
+			
+			if ( jobject.length == 0 && login_pw1.value == login_pw2.value && login_pw1.value != "" && login_pw2.value != "")
+			{
+			   
+				   var new_profiel = {
+					beroep: "",
+					email: login_email.value,
+					familienaam: "",
+					foto: "",
+					geboortedatum: "",
+					gewicht: 0,
+					grootte: 0,
+					haarkleur: "",
+					nickname: "",
+					oogkleur: "",
+					sexe: "",
+					voornaam: "", 
+					wachtwoord:login_pw1.value
+				};
+
+				//console.log(scrumlib.createDataset(new_profiel));
+				var jnewobject =scrumlib.createDataset(new_profiel);
+				if  (jnewobject.length != 0)
+				{
+				scrumlib.save();
+				console.log(scrumlib.getAllDatasets());
+			    }
+				
+			   
+			}
+			
+        })
+}
+</script>
+</body>
+</html>
+
+
